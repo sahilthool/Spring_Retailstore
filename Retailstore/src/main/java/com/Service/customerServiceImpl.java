@@ -46,6 +46,14 @@ public class customerServiceImpl implements customerService {
 		return customerDao.getAllCustomer();
 	}
 
+
+	@Override
+	public boolean checkCustomer(Customer customer) {
+		if(customerDao.getCustomer(customer.getUser_Name(), customer.getPassword())!=null)
+			return true;
+		return false;
+	}
+
 	
 
 	

@@ -75,6 +75,23 @@ public class CustomerDaoImp implements CustomerDao {
 	}
 
 
+
+	@Override
+	public Customer getCustomer(String username, String password) {
+		
+		Customer customer=null;
+		try {
+		String query="SELECT * FROM Customer where User_Name=? and Passwords=?";
+		customer=jdbcTemplate.queryForObject(query, new CustomerRowMapper(), username,password);
+		}
+		catch(EmptyResultDataAccessException ex) {
+			return customer;
+		}
+		return customer;
+		
+	}
+
+
 	
 
 }

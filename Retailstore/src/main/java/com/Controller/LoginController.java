@@ -24,22 +24,22 @@ public class LoginController {
 		return new ModelAndView("Login", "command", new Customer());
 	}
 
-//	@RequestMapping("/login")
-//	public ModelAndView loginController(@ModelAttribute Customer customer,HttpSession session) {
-//		
-//		ModelAndView modelAndView=new ModelAndView();
-//		if (customerService.searchCustomer(customer)) {
-//			modelAndView.addObject("customer", customer);  //user object added at request scope
-//			session.setAttribute("customer", customer);
-//			modelAndView.setViewName("index");
-//		}		
-//		else {
-//			modelAndView.addObject("message", "Invalid Credentials");
-//			modelAndView.addObject("command", new Customer());
-//			modelAndView.setViewName("Login");
-//		}
-//		return modelAndView;
-//	}
+	@RequestMapping("/login")
+	public ModelAndView loginController(@ModelAttribute Customer customer,HttpSession session) {
+		
+		ModelAndView modelAndView=new ModelAndView();
+		if (customerService.checkCustomer(customer)) {
+			modelAndView.addObject("customer", customer);  //customer object added at request scope
+			session.setAttribute("customer", customer);
+			modelAndView.setViewName("index");
+		}		
+		else {
+			modelAndView.addObject("message", "Invalid Credentials");
+			modelAndView.addObject("command", new Customer());
+			modelAndView.setViewName("Login");
+		}
+		return modelAndView;
+	}
 	
 
 }
