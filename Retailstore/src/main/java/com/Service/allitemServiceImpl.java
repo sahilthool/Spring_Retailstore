@@ -1,10 +1,23 @@
 package com.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.Bean.Item;
+import com.Persistence.AllitemDao;
 import com.Persistence.Allitemdaoimpl;
+import com.Persistence.CustomerDao;
 
+@Service
 public class allitemServiceImpl implements allitemService {
+	
+	
+	private AllitemDao aa;
 
-	Allitemdaoimpl aa=new Allitemdaoimpl();
+	@Autowired
+	public void setAllitemDao(AllitemDao aa) {
+		this.aa= aa;
+	}
+	
 	@Override
 	public void showallitem() {
 		aa.showallitem();
