@@ -6,5 +6,28 @@
 </head>
 <body>
 
+<h1>Employee Management System</h1>
+<hr>
+<h2 th:text="'Welcome '+${session.customer.User_Name}+'!'"></h2>
+<hr>
+<h2>Items Available</h2>
+<table border="1">
+	<tr>
+		<th>Item ID</th>
+		<th>Item Name</th>
+		<th>Category</th>
+		<th>Quantity</th>
+		<th>Price</th>		
+	</tr>
+	<tr th:each="item : ${itemList}">
+		<td th:text="${item.item_ID}"></td>
+		<td th:text="${item.item_Name}"></td>
+		<td th:text="${item.item_Category}"></td>
+		<td th:text="${item.item_Quantity}"></td>
+		<td th:text="${item.item_Price}"></td>		
+	</tr>
+</table>
+<br><br>
+<a href="./menu">Go To Main Page</a>
 </body>
 </html>

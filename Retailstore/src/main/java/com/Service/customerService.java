@@ -10,5 +10,6 @@ public interface customerService {
 	boolean deleteCustomer(int id);
 	Customer searchCustomer(int id);
 	List<Customer> getAllCustomers();
+	boolean checkCustomer(Customer customer);
 
 }
