@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.Bean.Cart;
 import com.Bean.Item;
 import com.Bean.Transaction;
@@ -14,12 +17,16 @@ import com.Bean.Transaction_Details;
 import com.Persistence.Allitemdaoimpl;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
-
+@Service
 public class transactionDetailsServiceImpl implements transactionDetailsService {
 
-	TransactionDetailsDaoImpl td=new TransactionDetailsDaoImpl();
-	
-     @Override
+	 private TransactionDetailsDaoImpl td;
+	 @Autowired
+	public void setTd(TransactionDetailsDaoImpl td) {
+		this.td = td;
+	}
+
+	@Override
 	public boolean addToCart(Cart cart) {
 		Transaction_Details transaction=null;
 		
