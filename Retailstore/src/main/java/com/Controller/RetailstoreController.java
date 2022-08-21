@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.Bean.Customer;
 import com.Bean.Item;
 import com.Service.allitemService;
 
@@ -31,5 +32,14 @@ public class RetailstoreController {
 
 	}
 	
+	@RequestMapping("/Cart")
+	public ModelAndView cartController() {
+		return new ModelAndView("Cart");
+	}
+	
+	@RequestMapping("/Logout")
+	public ModelAndView logoutController() {
+		return new ModelAndView("Login", "command", new Customer());
+	}
 
 }

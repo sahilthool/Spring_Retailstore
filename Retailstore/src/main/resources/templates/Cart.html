@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="https://thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Cart</title>
@@ -7,10 +7,12 @@
 <body>
 <h1>Cart</h1>
 <hr>
-<h2 th:text="'Welcome '+${session.user.userName}+'!'"></h2>
+<h2 th:text="'Welcome '+${session.customer.User_Name}+'!'"></h2>
 <hr>
 <a href="/AddtoCart">Add To Cart</a><br><br>
 <a href="/DeletefromCart">Delete from Cart</a><br><br>
 <a href="/UpdateQuantity">Update Quantity</a><br><br>
+<br><br>
+<a href="./menu">Go To Main Page</a>
 </body>
 </html>
