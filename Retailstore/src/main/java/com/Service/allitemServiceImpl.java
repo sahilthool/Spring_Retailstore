@@ -1,4 +1,6 @@
 package com.Service;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ public class allitemServiceImpl implements allitemService {
 	}
 	
 	@Override
-	public void showallitem() {
-		aa.showallitem();
+	public List<Item> showallitem() {
+		return aa.showallitem();
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package com.Service;
 
+import java.util.List;
+
 import com.Bean.Item;
 
 public interface allitemService {
 	
-	void showallitem();
+	List<Item> showallitem();
 	boolean additem(Item allItem);
 	Item searchItem(int id);
 	boolean deleteitem(int id);

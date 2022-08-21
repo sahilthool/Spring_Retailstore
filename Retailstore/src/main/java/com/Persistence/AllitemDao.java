@@ -1,9 +1,11 @@
 package com.Persistence;
 
+import java.util.List;
+
 import com.Bean.Item;
 
 public interface AllitemDao {
-	void showallitem();
+	List<Item> showallitem();
 	boolean additem(Item allItem);
 	Item searchItem(int id);
 	boolean deleteitem(int id);

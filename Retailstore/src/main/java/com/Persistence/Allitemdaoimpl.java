@@ -20,23 +20,12 @@ public class Allitemdaoimpl implements AllitemDao {
 	}
 	
 	@Override
-	public void showallitem() {
+	public List<Item> showallitem() {
 		
 		String query="SELECT * FROM allItems";
-		List<Item> list=jdbcTemplate.query(query, new ItemRowMapper());
+		List<Item> itemList=jdbcTemplate.query(query, new ItemRowMapper());
 		
-		System.out.println("ItemId    Item Name    Category        Quantity      Price");
-			for(Item i:list){
-				
-		        int item_ID = i.getItem_ID();
-				String item_Name = i.getItem_Name();
-				String item_Category = i.getItem_Category();
-				int item_Quantity = i.getItem_Quantity();
-				double item_price = i.getItem_Price();
-	
-				System.out.println(item_ID +" "+item_Name+" "+item_Category+" "+item_Quantity+" "+item_price);
-
-			}
+		return itemList;
 	}
 
 	@Override

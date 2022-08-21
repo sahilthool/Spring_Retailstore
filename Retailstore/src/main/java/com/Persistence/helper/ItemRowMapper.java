@@ -17,8 +17,8 @@ public class ItemRowMapper implements RowMapper<Item>{
 		int item_Quantity = resultSet.getInt("quantity");
 		double item_price = resultSet.getDouble("price");
 						
-		Item i= new Item(item_ID,item_Name,item_Category,item_Quantity,item_price);
-		return i;
+		Item item= new Item(item_ID,item_Name,item_Category,item_Quantity,item_price);
+		return item;
 	}
 
 }
