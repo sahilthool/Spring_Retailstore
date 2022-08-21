@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.Bean.Cart;
@@ -21,6 +24,7 @@ import com.Bean.Item;
 import com.Bean.Transaction_Details;
 //import com.Controller.LoginController.User;
 import com.Service.allitemService;
+import com.Service.customerService;
 import com.Service.transactionDetailsService;
 
 @Controller
@@ -30,6 +34,9 @@ public class RetailstoreController {
 	
 	@Autowired
 	private Customer customer;
+	
+	@Autowired
+	private customerService customerService;
 	
 	@Autowired
 	private allitemService allitemService;
@@ -73,10 +80,9 @@ public class RetailstoreController {
 	
 	@RequestMapping("/AddtoCart")
 	public ModelAndView addtoCartController() {
-		//Map<String, Object> model = new HashMap<String, Object>();
+		
 		List<Item> items = allitemService.showallitem();
-		//model.put("itemList", items);
-		//model.put("newTrans", new Transaction_Details());
+		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("itemList", items);
 		modelAndView.addObject("newTrans", new Transaction_Details());
@@ -84,27 +90,38 @@ public class RetailstoreController {
 		modelAndView.setViewName("AddtoCart");
 
 		return modelAndView;
-		//return new ModelAndView("AddtoCart", "model", model);
+		
 	}
 	
 	@RequestMapping("/saveItem")
-	public ModelAndView saveItemController(@ModelAttribute("newTrans") Transaction_Details transaction_Details, @ModelAttribute("customer") Customer customer) {
+	public ModelAndView saveItemController(@ModelAttribute("newTrans") Transaction_Details transaction_Details, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
 		
-		int item_id = transaction_Details.getItem_ID();
-		System.out.println("item id : ------------"+item_id);
-		int quantity = transaction_Details.getQuantity();
-		System.out.println(quantity);
+		HttpSession session = request.getSession();
+		session.setAttribute("customer", customer);
 		
-		System.out.println("cus id--- "+customer.getCustomer_ID());
+		int item_id = transaction_Details.getItem_ID();
+		//System.out.println("item id : ------------"+item_id);
+		int quantity = transaction_Details.getQuantity();
+		//System.out.println(quantity);
+		
+		String user_name = customer.getUser_Name();
+		
+		int customerId = customerService.searchCustomerID(user_name);
+		
+		System.out.println("======================+++++++++");
+		
+		Item item = allitemService.searchItem(item_id);
+		System.out.println(item + "======================");
+		
 		
 		Cart cart = new Cart();		
 		
-		cart.setCustomer_id(customer.getCustomer_ID());
+		cart.setCustomer_id(customerId);
 		cart.setItem_Id(item_id);
-		cart.setItem_Name(allitemService.searchItem(item_id).getItem_Name());
+		cart.setItem_Name(item.getItem_Name());
 		cart.setQuantity(quantity);
-		cart.setPrice(allitemService.searchItem(item_id).getItem_Price());
+		cart.setPrice(item.getItem_Price());
 				
 
 		String message = null;
