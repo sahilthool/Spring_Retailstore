@@ -19,11 +19,9 @@ public class LoginController {
 	
 	static int customer_id;
 	
-//	public class User
-//	 {
-//	    String user;
-//	    /*  setter getter*/
-//	  }
+	@Autowired
+	private Customer customer;
+
 	
 	@Autowired
 	private customerService customerService;

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,11 @@ import com.Service.allitemService;
 import com.Service.transactionDetailsService;
 
 @Controller
+@Scope("session")
 public class RetailstoreController {
 	
-//	@Autowired
-//	private User user;
+	@Autowired
+	private Customer customer;
 	
 	@Autowired
 	private allitemService allitemService;
@@ -75,11 +77,15 @@ public class RetailstoreController {
 		ModelAndView modelAndView = new ModelAndView();
 		
 		int item_id = transaction_Details.getItem_ID();
+		System.out.println("item id : ------------"+item_id);
 		int quantity = transaction_Details.getQuantity();
+		System.out.println(quantity);
 		
-		Cart cart = new Cart();
+		System.out.println(customer.getCustomer_ID());
 		
-		cart.setCustomer_id(1);
+		Cart cart = new Cart();		
+		
+		cart.setCustomer_id(customer.getCustomer_ID());
 		cart.setItem_Id(item_id);
 		cart.setItem_Name(allitemService.searchItem(item_id).getItem_Name());
 		cart.setQuantity(quantity);
