@@ -92,6 +92,23 @@ public class CustomerDaoImp implements CustomerDao {
 	}
 
 
+
+	@Override
+	public int searchCustomerID(String username) {
+		
+		Customer customer=null;
+		try {
+		String query="SELECT * FROM customer where User_Name=?";
+		customer=jdbcTemplate.queryForObject(query, new CustomerRowMapper(), username);
+		}
+		catch(EmptyResultDataAccessException ex) {
+			return customer.getCustomer_ID();
+		}
+		return customer.getCustomer_ID();
+		
+	}
+
+
 	
 
 }

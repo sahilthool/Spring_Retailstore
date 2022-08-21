@@ -11,5 +11,6 @@ public interface customerService {
 	Customer searchCustomer(int id);
 	List<Customer> getAllCustomers();
 	boolean checkCustomer(Customer customer);
+	int searchCustomerID(String username);
 
 }

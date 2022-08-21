@@ -3,6 +3,7 @@ package com.Controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,16 @@ import com.Service.customerService;
 
 
 @Controller
+@Scope("session")
 public class LoginController {
+	
+	static int customer_id;
+	
+//	public class User
+//	 {
+//	    String user;
+//	    /*  setter getter*/
+//	  }
 	
 	@Autowired
 	private customerService customerService;
@@ -30,6 +40,7 @@ public class LoginController {
 		ModelAndView modelAndView=new ModelAndView();
 		if (customerService.checkCustomer(customer)) {
 			modelAndView.addObject("customer", customer);  //customer object added at request scope
+			customer_id = customer.getCustomer_ID();
 			session.setAttribute("customer", customer);
 			modelAndView.setViewName("index");
 		}		

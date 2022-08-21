@@ -54,6 +54,12 @@ public class customerServiceImpl implements customerService {
 		return false;
 	}
 
+
+	@Override
+	public int searchCustomerID(String username) {
+		return customerDao.searchCustomerID(username);
+	}
+
 	
 
 	

@@ -12,4 +12,5 @@ public interface CustomerDao {
 	Customer searchCustomer(int id);
 	List<Customer> getAllCustomer();
 	Customer getCustomer(String username, String password);
+	int searchCustomerID(String username);
 }
