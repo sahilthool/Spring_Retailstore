@@ -8,8 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.Bean.Customer;
 import com.Bean.Transaction;
 import com.Bean.Transaction_Details;
+import com.Persistence.helper.CustomerRowMapper;
+import com.Persistence.helper.TransactionRowMapper;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,104 +25,57 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class transactionDaoImpl implements TransactionDao {
+	
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	@Override
-	public void showalltransactions() {
-		try( Connection connection=DriverManager.
-				getConnection("jdbc:mysql://127.0.0.1:3306/retailstore", "root", "wiley");
-				Statement statement=connection.createStatement();	) {
-
-			ResultSet resultSet= statement.executeQuery("SELECT * FROM Transaction");
-			
-			while(resultSet.next()) {
-				int Transaction_ID=resultSet.getInt("Transaction_Id");
-				int Customer_ID=resultSet.getInt("Customer_ID");
-
-				
-				System.out.println(Transaction_ID+" "+Customer_ID);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public List<Transaction> getAllTransactions() {
+		String query="SELECT * FROM transaction";
+		List<Transaction> transList=jdbcTemplate.query(query, new TransactionRowMapper());
+		
+		return transList;
 
 	}
 
 	@Override
-	public boolean addtransaction(Transaction transaction) {
-		int rows = 0;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/retailstore", "root",
-				"wiley");
-				PreparedStatement preparedStatement = connection
-						.prepareStatement("INSERT INTO Transaction values(?,?)");) {
+	public int addtransaction(Transaction transaction) {
+		
+		String query = "INSERT INTO transaction values(?,?)";
 
-			preparedStatement.setInt(1, transaction.getTransaction_ID());
-			preparedStatement.setInt(2, transaction.getCustomer_ID());
-			
-			
+		int rows = jdbcTemplate.update(query, transaction.getTransaction_ID(), transaction.getCustomer_ID());
 
-			rows = preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		if (rows>0)
-		   return true;
-		else
-			return false;
+		return rows;
 
 	}
 
 	@Override
-	public boolean deletetransaction(int id) {
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/retailstore", "root",
-				"wiley");
-				PreparedStatement preparedStatement = connection
-						.prepareStatement("DELETE FROM transaction where transaction_Id=?");) {
+	public int deletetransaction(int id) {
+		
+		String query = "DELETE FROM transaction where Transaction_id=?";
 
-			preparedStatement.setInt(1,id);
+		int rows = jdbcTemplate.update(query, id);
 
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				//System.out.println("Deleted");
-				return true;
-			}
-			else {
-				return false;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
+		return rows;	
 
 
 	}
 	@Override
-	public Transaction searchTransaction(int custid) {
-		Transaction list=null;
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/retailstore", "root",
-				"wiley");
-				PreparedStatement preparedStatement = connection
-						.prepareStatement("SELECT * FROM transaction where customer_id=?");) {
-
-			preparedStatement.setInt(1,custid);
-
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				int id1 = resultSet.getInt("transaction_Id");
-				int id2 = resultSet.getInt("customer_Id");
-				//int quantity = resultSet.getInt("quantity");
-				
-				list=new Transaction(id1,id2);
-				//list.add(new Transaction_Details(id1,id2,quantity) );
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public Transaction searchTransaction(int transid) {
+		
+		Transaction transaction=null;
+		try {
+		String query="SELECT * FROM transaction where Transaction_id=?";
+		transaction=jdbcTemplate.queryForObject(query, new TransactionRowMapper(), transid);
 		}
-		return list;
+		catch(EmptyResultDataAccessException ex) {
+			return transaction;
+		}
+		return transaction;
 		
 	}
 	

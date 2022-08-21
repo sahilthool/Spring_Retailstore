@@ -8,36 +8,49 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.Bean.Bill;
+import com.Bean.Customer;
 import com.Bean.Transaction;
 import com.Bean.Transaction_Details;
+import com.Persistence.TransactionDao;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
 
 public class transactionServiceImpl implements transactionService {
-	transactionDaoImpl td=new transactionDaoImpl();
+	
+	private TransactionDao transactionDao;
+	
+	@Autowired
+	public void setTransactionDao(TransactionDao transactionDao) {
+		this.transactionDao = transactionDao;
+	}
+	
 	
 	@Override
-	public void showbill(int customer_id) {
+	public List<Transaction> getAllTransactions() {
+		return transactionDao.getAllTransactions();
 		
 	}
+	
 	@Override
-	public void showalltransactions() {
-		td.showalltransactions();
-		
+	public boolean addtransaction(Transaction transaction) {		
+		if(transactionDao.addtransaction(transaction) > 0)
+			return true;
+		return false;
 	}
-	@Override
-	public boolean addtransaction(Transaction transaction) {
-		
-		return td.addtransaction(transaction);
-	}
+	
 	@Override
 	public boolean deletetransaction(int id) {
-		return td.deletetransaction(id);
+		if(transactionDao.deletetransaction(id)>0)
+			return true;
+		return false;
 	}
+	
 	@Override
-	public Transaction searchTransaction(int custid) {
-		return td.searchTransaction(custid);
+	public Transaction searchTransaction(int transid) {
+		return transactionDao.searchTransaction(transid);
 	}
 
 	

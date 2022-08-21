@@ -7,11 +7,9 @@ import com.Bean.Transaction;
 import com.Bean.Transaction_Details;
 
 public interface transactionService {
-	
-	//List<Bill> generatebill(int customer_id);
-	void showbill(int customer_id);
-	void showalltransactions();
+		
+	List<Transaction> getAllTransactions();
 	boolean addtransaction(Transaction transaction);
 	boolean deletetransaction(int id);
-	Transaction searchTransaction(int custid) ;
+	Transaction searchTransaction(int transid) ;
 }
