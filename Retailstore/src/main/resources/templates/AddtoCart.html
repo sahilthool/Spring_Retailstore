@@ -9,10 +9,37 @@
 <hr>
 <h2 th:text="'Welcome '+${session.customer.User_Name}+'!'"></h2>
 <hr>
+<br>
+
+<h2>Items Available</h2>
+<table border="1">
+	<tr>
+		<th>Item ID</th>
+		<th>Item Name</th>
+		<th>Category</th>
+		<th>Quantity</th>
+		<th>Price</th>		
+	</tr>
+	<tr th:each="item : ${itemList}">
+		<td th:text="${item.item_ID}"></td>
+		<td th:text="${item.item_Name}"></td>
+		<td th:text="${item.item_Category}"></td>
+		<td th:text="${item.item_Quantity}"></td>
+		<td th:text="${item.item_Price}"></td>		
+	</tr>
+</table>
+
+
+<br><br>
 <form action="#" method="post" th:action="@{./saveItem}" th:object="${newTrans}" >
 
 	
-	Enter Item Id : <input type="number" th:field="*{item_ID}"><br><br>
+	<br><br>
+	Select Item Id : <select th:field="*{item_ID}">
+	<option th:each="id : ${item_Ids}" th:value="${id}" th:label="${id}">
+	</select>
+	
+	<br><br>	
 	
 	Enter Quantity : <input type="number" th:field="*{quantity}"><br><br>
 			

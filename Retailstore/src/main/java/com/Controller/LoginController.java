@@ -17,8 +17,7 @@ import com.Service.customerService;
 @Scope("session")
 public class LoginController {
 	
-	static int customer_id;
-	
+		
 	@Autowired
 	private Customer customer;
 
@@ -37,8 +36,7 @@ public class LoginController {
 		
 		ModelAndView modelAndView=new ModelAndView();
 		if (customerService.checkCustomer(customer)) {
-			modelAndView.addObject("customer", customer);  //customer object added at request scope
-			customer_id = customer.getCustomer_ID();
+			modelAndView.addObject("customer", customer);  //customer object added at request scope			
 			session.setAttribute("customer", customer);
 			modelAndView.setViewName("index");
 		}		

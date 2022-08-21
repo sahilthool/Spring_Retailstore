@@ -1,6 +1,8 @@
 package com.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.Bean.Cart;
@@ -22,6 +25,7 @@ import com.Service.transactionDetailsService;
 
 @Controller
 @Scope("session")
+@SessionAttributes("customer")
 public class RetailstoreController {
 	
 	@Autowired
@@ -69,11 +73,22 @@ public class RetailstoreController {
 	
 	@RequestMapping("/AddtoCart")
 	public ModelAndView addtoCartController() {
-		return new ModelAndView("AddtoCart", "newTrans", new Transaction_Details());
+		//Map<String, Object> model = new HashMap<String, Object>();
+		List<Item> items = allitemService.showallitem();
+		//model.put("itemList", items);
+		//model.put("newTrans", new Transaction_Details());
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("itemList", items);
+		modelAndView.addObject("newTrans", new Transaction_Details());
+		
+		modelAndView.setViewName("AddtoCart");
+
+		return modelAndView;
+		//return new ModelAndView("AddtoCart", "model", model);
 	}
 	
 	@RequestMapping("/saveItem")
-	public ModelAndView saveItemController(@ModelAttribute("newTrans") Transaction_Details transaction_Details, HttpSession session) {
+	public ModelAndView saveItemController(@ModelAttribute("newTrans") Transaction_Details transaction_Details, @ModelAttribute("customer") Customer customer) {
 		ModelAndView modelAndView = new ModelAndView();
 		
 		int item_id = transaction_Details.getItem_ID();
@@ -81,7 +96,7 @@ public class RetailstoreController {
 		int quantity = transaction_Details.getQuantity();
 		System.out.println(quantity);
 		
-		System.out.println(customer.getCustomer_ID());
+		System.out.println("cus id--- "+customer.getCustomer_ID());
 		
 		Cart cart = new Cart();		
 		
