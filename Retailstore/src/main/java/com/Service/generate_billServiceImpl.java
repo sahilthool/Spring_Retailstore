@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.Bean.Bill;
+import com.Bean.Cart;
 import com.Bean.Customer;
 import com.Bean.Item;
 import com.Bean.Transaction;
@@ -19,7 +20,9 @@ public class generate_billServiceImpl implements generate_billService {
 
 		
 	@Override
-	public void generate_bill(int customer_id) {
+	public List<Cart> generate_bill(int customer_id) {
+		
+		List<Cart> cart=new ArrayList<Cart>();
 		customerServiceImpl custservice=new customerServiceImpl();
 		//int customer_id2=custservice.searchCustomer(customer_id);
 		
@@ -40,14 +43,17 @@ public class generate_billServiceImpl implements generate_billService {
 		final double Cd_tax=0.1,Cosmetics_tax=0.12;
 		for(Transaction_Details tdd:list) {
 			
-			System.out.println("Item_id"+tdd.getItem_ID());
+			//System.out.println("Item_id"+tdd.getItem_ID());
 			
 			allitemServiceImpl itemservice=new allitemServiceImpl();
 			Item item=itemservice.searchItem(tdd.getItem_ID());
 			
-			System.out.println("Item_name:"+item.getItem_Name());
-             System.out.println("Item Quantity:"+tdd.getQuantity());
-             System.out.println("Price:"+item.getItem_Price());
+		//	System.out.println("Item_name:"+item.getItem_Name());
+          //   System.out.println("Item Quantity:"+tdd.getQuantity());
+            // System.out.println("Price:"+item.getItem_Price());
+             
+             cart.add(new Cart(customer_id,tdd.getItem_ID(),item.getItem_Name(),tdd.getQuantity(),item.getItem_Price()));
+             
              String item_category=item.getItem_Category();
               
              if(item_category=="CD")
@@ -58,6 +64,7 @@ public class generate_billServiceImpl implements generate_billService {
            	  grand_total=grand_total+item.getItem_Price()*tdd.getQuantity();
 		}
 		System.out.println("Grand Total : "+grand_total);
+		return cart;
 	}
 			
 }

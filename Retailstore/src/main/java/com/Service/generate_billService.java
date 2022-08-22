@@ -1,7 +1,11 @@
 package com.Service;
 
+import java.util.List;
+
+import com.Bean.Cart;
+
 public interface generate_billService {
 	
-	void generate_bill(int customer_id);
+	List<Cart> generate_bill(int customer_id);
 
 }

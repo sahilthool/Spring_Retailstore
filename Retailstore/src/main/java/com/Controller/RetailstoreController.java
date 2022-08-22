@@ -1,6 +1,7 @@
 package com.Controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
@@ -18,6 +19,7 @@ import com.Bean.Item;
 import com.Bean.Transaction_Details;
 //import com.Controller.LoginController.User;
 import com.Service.allitemService;
+import com.Service.generate_billService;
 import com.Service.transactionDetailsService;
 
 @Controller
@@ -33,13 +35,16 @@ public class RetailstoreController {
 	@Autowired
 	private transactionDetailsService transactionDetailsService;
 	
+	@Autowired
+	private generate_billService gbs;
+	
 	@ModelAttribute("item_Ids")
 	public List<Integer> getItem_Ids(){
 		List<Item> items=allitemService.showallitem();
 		
 		return items.stream()
 				.map(Item::getItem_ID)
-				.distinct().sorted().toList();
+				.distinct().sorted().collect(Collectors.toList());
 	}
 	
 	@RequestMapping("/menu")
@@ -104,5 +109,17 @@ public class RetailstoreController {
 
 		return modelAndView;
 	}
+	
+	@RequestMapping("/GenerateBill")
+	public ModelAndView generateBillController() {
+
+		int customer_id=0;
+		List<Cart> cart = gbs.generate_bill(customer_id);
+
+		return new ModelAndView("GenerateBill", "itemList", cart);
+
+	}
+	
+
 
 }
