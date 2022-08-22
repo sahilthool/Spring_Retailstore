@@ -12,4 +12,5 @@ public interface transactionService {
 	boolean addtransaction(Transaction transaction);
 	boolean deletetransaction(int id);
 	Transaction searchTransaction(int transid) ;
+	int getTransactionId(int custId);
 }

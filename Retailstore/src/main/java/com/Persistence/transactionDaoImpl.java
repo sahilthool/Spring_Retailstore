@@ -25,7 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+@Repository
 public class transactionDaoImpl implements TransactionDao {
 	
 	private JdbcTemplate jdbcTemplate;
@@ -78,6 +78,20 @@ public class transactionDaoImpl implements TransactionDao {
 			return transaction;
 		}
 		return transaction;
+		
+	}
+
+	@Override
+	public int getTransactionId(int custId) {
+		Transaction transaction=null;
+		try {
+		String query="SELECT * FROM transaction where customer_id=?";
+		transaction=jdbcTemplate.queryForObject(query, new TransactionRowMapper(), custId);
+		}
+		catch(EmptyResultDataAccessException ex) {
+			return transaction.getTransaction_ID();
+		}
+		return transaction.getTransaction_ID();
 		
 	}
 	
