@@ -20,12 +20,8 @@ import com.Persistence.Allitemdaoimpl;
 import com.Persistence.TransactionDao;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
-<<<<<<< HEAD
-
-=======
 import com.Persistence.helper.TransactionDetailsRowMapper;
 import com.Persistence.helper.TransactionRowMapper;
->>>>>>> refs/heads/tejj
 @Service
 public class transactionDetailsServiceImpl implements transactionDetailsService {
 
@@ -73,7 +69,6 @@ public class transactionDetailsServiceImpl implements transactionDetailsService 
 		int item_id= cart.getItem_Id();
 		int quantity = cart.getQuantity();
 		
-<<<<<<< HEAD
 		int transactionId = transactionDao.getTransactionId(custid);
 		
 		Item item = aa.searchItem(item_id);
@@ -113,7 +108,6 @@ public class transactionDetailsServiceImpl implements transactionDetailsService 
 //			e.printStackTrace();
 //		}
 //			return false;
-=======
 		String query="SELECT * FROM Transaction where customer_Id=?";
 		Transaction t= (Transaction) jdbcTemplate.query(query, new TransactionRowMapper(),custid);
 			Item item=itemdao.searchItem(item_id);
@@ -126,7 +120,6 @@ public class transactionDetailsServiceImpl implements transactionDetailsService 
 			       return true;
 			}
 			return false;
->>>>>>> refs/heads/tejj
 	}
 
 	@Override
