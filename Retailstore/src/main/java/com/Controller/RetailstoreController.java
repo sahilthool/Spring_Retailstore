@@ -109,13 +109,14 @@ public class RetailstoreController {
 		//System.out.println(quantity);
 		
 		String user_name = customer.getUser_Name();
-		
+				
 		int customerId = customerService.searchCustomerID(user_name);
 		
+		//System.out.println("id==============" + customerId);
 		System.out.println("======================+++++++++");
 		
 		Item item = allitemService.searchItem(item_id);
-		System.out.println(item + "======================");
+		//System.out.println(item + "======================");
 		
 		
 		Cart cart = new Cart();		
@@ -125,6 +126,8 @@ public class RetailstoreController {
 		cart.setItem_Name(item.getItem_Name());
 		cart.setQuantity(quantity);
 		cart.setPrice(item.getItem_Price());
+		
+		System.out.println("cart====" + cart);
 				
 
 		String message = null;

@@ -3,10 +3,13 @@ package com.Persistence;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.Bean.Customer;
 import com.Bean.Item;
+import com.Persistence.helper.CustomerRowMapper;
 import com.Persistence.helper.ItemRowMapper;
 
 @Repository
@@ -58,9 +61,14 @@ public class Allitemdaoimpl implements AllitemDao {
 	@Override
 	public Item searchItem(int id) {
 		
+		Item item=null;
+		try {
 		String query="SELECT * FROM allItems where item_Id=?";
-		Item item=(Item) jdbcTemplate.query(query, new ItemRowMapper(),id);
-		
+		item=jdbcTemplate.queryForObject(query, new ItemRowMapper(), id);
+		}
+		catch(EmptyResultDataAccessException ex) {
+			return item;
+		}
 		return item;
 	}
 
