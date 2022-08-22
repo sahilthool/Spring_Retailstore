@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.Bean.Cart;
@@ -19,7 +20,12 @@ import com.Persistence.Allitemdaoimpl;
 import com.Persistence.TransactionDao;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
+<<<<<<< HEAD
 
+=======
+import com.Persistence.helper.TransactionDetailsRowMapper;
+import com.Persistence.helper.TransactionRowMapper;
+>>>>>>> refs/heads/tejj
 @Service
 public class transactionDetailsServiceImpl implements transactionDetailsService {
 
@@ -44,6 +50,20 @@ public class transactionDetailsServiceImpl implements transactionDetailsService 
 	}
 	
 
+	 private JdbcTemplate jdbcTemplate;
+
+		@Autowired
+		public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+			this.jdbcTemplate = jdbcTemplate;
+		}
+		
+		private Allitemdaoimpl itemdao;
+
+		@Autowired
+		public void setItemdao(Allitemdaoimpl itemdao) {
+			this.itemdao = itemdao;
+		}
+
 	@Override
 	public boolean addToCart(Cart cart) {
 		
@@ -53,6 +73,7 @@ public class transactionDetailsServiceImpl implements transactionDetailsService 
 		int item_id= cart.getItem_Id();
 		int quantity = cart.getQuantity();
 		
+<<<<<<< HEAD
 		int transactionId = transactionDao.getTransactionId(custid);
 		
 		Item item = aa.searchItem(item_id);
@@ -92,6 +113,20 @@ public class transactionDetailsServiceImpl implements transactionDetailsService 
 //			e.printStackTrace();
 //		}
 //			return false;
+=======
+		String query="SELECT * FROM Transaction where customer_Id=?";
+		Transaction t= (Transaction) jdbcTemplate.query(query, new TransactionRowMapper(),custid);
+			Item item=itemdao.searchItem(item_id);
+			if(item.getItem_Quantity()>=quantity && quantity>0)
+			{
+				int transaction_id = t.getTransaction_ID();
+				transaction=new Transaction_Details(transaction_id,item_id,quantity);
+				td.addtransactionDetail(transaction);
+			itemdao.updateQuantity(item_id, quantity);
+			       return true;
+			}
+			return false;
+>>>>>>> refs/heads/tejj
 	}
 
 	@Override
