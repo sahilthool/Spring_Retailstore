@@ -1,8 +1,11 @@
 package com.Controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -11,23 +14,29 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.Bean.Cart;
 import com.Bean.Customer;
 import com.Bean.Item;
 import com.Bean.Transaction_Details;
-//import com.Controller.LoginController.User;
 import com.Service.allitemService;
 import com.Service.generate_billService;
+import com.Service.customerService;
 import com.Service.transactionDetailsService;
 
 @Controller
 @Scope("session")
+@SessionAttributes("customer")
 public class RetailstoreController {
 	
 	@Autowired
 	private Customer customer;
+	
+	@Autowired
+	private customerService customerService;
 	
 	@Autowired
 	private allitemService allitemService;
@@ -74,27 +83,48 @@ public class RetailstoreController {
 	
 	@RequestMapping("/AddtoCart")
 	public ModelAndView addtoCartController() {
-		return new ModelAndView("AddtoCart", "newTrans", new Transaction_Details());
+		
+		List<Item> items = allitemService.showallitem();
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("itemList", items);
+		modelAndView.addObject("newTrans", new Transaction_Details());
+		
+		modelAndView.setViewName("AddtoCart");
+
+		return modelAndView;
+		
 	}
 	
 	@RequestMapping("/saveItem")
-	public ModelAndView saveItemController(@ModelAttribute("newTrans") Transaction_Details transaction_Details, HttpSession session) {
+	public ModelAndView saveItemController(@ModelAttribute("newTrans") Transaction_Details transaction_Details, HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
 		
-		int item_id = transaction_Details.getItem_ID();
-		System.out.println("item id : ------------"+item_id);
-		int quantity = transaction_Details.getQuantity();
-		System.out.println(quantity);
+		HttpSession session = request.getSession();
+		session.setAttribute("customer", customer);
 		
-		System.out.println(customer.getCustomer_ID());
+		int item_id = transaction_Details.getItem_ID();
+		//System.out.println("item id : ------------"+item_id);
+		int quantity = transaction_Details.getQuantity();
+		//System.out.println(quantity);
+		
+		String user_name = customer.getUser_Name();
+		
+		int customerId = customerService.searchCustomerID(user_name);
+		
+		System.out.println("======================+++++++++");
+		
+		Item item = allitemService.searchItem(item_id);
+		System.out.println(item + "======================");
+		
 		
 		Cart cart = new Cart();		
 		
-		cart.setCustomer_id(customer.getCustomer_ID());
+		cart.setCustomer_id(customerId);
 		cart.setItem_Id(item_id);
-		cart.setItem_Name(allitemService.searchItem(item_id).getItem_Name());
+		cart.setItem_Name(item.getItem_Name());
 		cart.setQuantity(quantity);
-		cart.setPrice(allitemService.searchItem(item_id).getItem_Price());
+		cart.setPrice(item.getItem_Price());
 				
 
 		String message = null;
@@ -113,8 +143,14 @@ public class RetailstoreController {
 	@RequestMapping("/GenerateBill")
 	public ModelAndView generateBillController() {
 
-		int customer_id=0;
-		List<Cart> cart = gbs.generate_bill(customer_id);
+		//HttpSession session = request.getSession();
+		//session.setAttribute("customer", customer);
+		
+    //      String user_name = customer.getUser_Name();
+		
+	int customerId=4;
+		//	int customerId = customerService.searchCustomerID(user_name);
+		List<Cart> cart = gbs.generate_bill(customerId);
 
 		return new ModelAndView("GenerateBill", "itemList", cart);
 

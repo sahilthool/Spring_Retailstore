@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.Bean.Bill;
 import com.Bean.Cart;
 import com.Bean.Customer;
@@ -15,10 +18,25 @@ import com.Bean.Item;
 import com.Bean.Transaction;
 import com.Bean.Transaction_Details;
 import com.Persistence.TransactionDetailsDaoImpl;
-
+@Service
 public class generate_billServiceImpl implements generate_billService {
 
 		
+	private transactionServiceImpl transervice;
+	
+	private transactionDetailsServiceImpl transaction_details ;
+	
+	@Autowired
+	public void setTranservice(transactionServiceImpl transervice) {
+		this.transervice = transervice;
+	}
+
+    @Autowired
+	public void setTransaction_details(transactionDetailsServiceImpl transaction_details) {
+		this.transaction_details = transaction_details;
+	}
+
+
 	@Override
 	public List<Cart> generate_bill(int customer_id) {
 		
@@ -26,11 +44,11 @@ public class generate_billServiceImpl implements generate_billService {
 		customerServiceImpl custservice=new customerServiceImpl();
 		//int customer_id2=custservice.searchCustomer(customer_id);
 		
-		transactionServiceImpl transervice=new transactionServiceImpl();
+		
 		Transaction transaction=transervice.searchTransaction(customer_id);
 		int transaction_id=transaction.getTransaction_ID();
 		
-		transactionDetailsServiceImpl transaction_details =new transactionDetailsServiceImpl();
+	
 		List<Transaction_Details> list=new ArrayList<Transaction_Details>();
 		list=transaction_details.searchTransactionDetails(transaction_id);
 		

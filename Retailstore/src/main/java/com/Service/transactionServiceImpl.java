@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.Bean.Bill;
 import com.Bean.Customer;
@@ -17,7 +18,7 @@ import com.Bean.Transaction_Details;
 import com.Persistence.TransactionDao;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
-
+//@Service
 public class transactionServiceImpl implements transactionService {
 	
 	private TransactionDao transactionDao;
