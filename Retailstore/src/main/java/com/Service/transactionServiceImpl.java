@@ -18,7 +18,7 @@ import com.Bean.Transaction_Details;
 import com.Persistence.TransactionDao;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
-//@Service
+@Service
 public class transactionServiceImpl implements transactionService {
 	
 	private TransactionDao transactionDao;

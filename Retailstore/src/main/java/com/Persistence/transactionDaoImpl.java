@@ -25,7 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+@Repository
 public class transactionDaoImpl implements TransactionDao {
 	
 	private JdbcTemplate jdbcTemplate;
