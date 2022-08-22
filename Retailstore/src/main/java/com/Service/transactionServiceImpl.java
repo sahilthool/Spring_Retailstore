@@ -18,7 +18,7 @@ import com.Bean.Transaction_Details;
 import com.Persistence.TransactionDao;
 import com.Persistence.TransactionDetailsDaoImpl;
 import com.Persistence.transactionDaoImpl;
-//@Service
+@Service
 public class transactionServiceImpl implements transactionService {
 	
 	private TransactionDao transactionDao;
@@ -52,6 +52,12 @@ public class transactionServiceImpl implements transactionService {
 	@Override
 	public Transaction searchTransaction(int transid) {
 		return transactionDao.searchTransaction(transid);
+	}
+
+
+	@Override
+	public int getTransactionId(int custId) {
+		return transactionDao.getTransactionId(custId);
 	}
 
 	

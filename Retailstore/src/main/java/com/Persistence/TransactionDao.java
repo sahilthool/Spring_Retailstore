@@ -11,4 +11,5 @@ public interface TransactionDao {
 	int addtransaction(Transaction transaction);
 	int deletetransaction(int id);
 	Transaction searchTransaction(int transid) ;
+	int getTransactionId(int custId);
 }
